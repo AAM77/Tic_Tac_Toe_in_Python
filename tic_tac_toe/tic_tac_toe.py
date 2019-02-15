@@ -66,8 +66,20 @@ def set_players(player_choice):
 
 def print_board(pos):
 
-    print("   |   |   ")
+    pos = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+    print(f" {pos[0]} | {pos[1]} | {pos[2]} ")
     print("-----------")
-    print("   |   |   ")
+    print(f" {pos[3]} | {pos[4]} | {pos[5]} ")
     print("-----------")
-    print("   |   |   ")
+    print(f" {pos[6]} | {pos[7]} | {pos[8]} ")
+
+
+def pick_position():
+    player_position = input("Where do you want to put your mark? (1-9)")
+
+    if ((0 <= player_position) and (player_position <= 9)):
+        #update_board(player_position)
+    else:
+        print("Invalid choice. You must choose a position from 1 - 9")
+        choose_position()
