@@ -1,4 +1,5 @@
 
+board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 player_1 = ''
 player_2 = ''
 
@@ -64,22 +65,25 @@ def set_players(player_choice):
 
 # PRINTS THE BOARD
 
-def print_board(pos):
+def print_board():
 
-    pos = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-
-    print(f" {pos[0]} | {pos[1]} | {pos[2]} ")
+    print(f" {board[0]} | {board[1]} | {board[2]} ")
     print("-----------")
-    print(f" {pos[3]} | {pos[4]} | {pos[5]} ")
+    print(f" {board[3]} | {board[4]} | {board[5]} ")
     print("-----------")
-    print(f" {pos[6]} | {pos[7]} | {pos[8]} ")
+    print(f" {board[6]} | {board[7]} | {board[8]} ")
 
-
+# GETS USER INPUT AND DETERMINES IF VALID
 def pick_position():
-    player_position = input("Where do you want to put your mark? (1-9)")
+    desired_position = input("Choose a position to place your mark. (1-9)")
 
     if ((0 <= player_position) and (player_position <= 9)):
-        #update_board(player_position)
+        update_board(desired_position)
     else:
         print("Invalid choice. You must choose a position from 1 - 9")
         choose_position()
+
+# UPDATES THE BOARD ARRAY WITH THE NEW POSITION
+def update_board(pos_choice):
+    board[pos_choice] = 'X' # or 'O' ... the mark belonging to the current player
+    print_board()
