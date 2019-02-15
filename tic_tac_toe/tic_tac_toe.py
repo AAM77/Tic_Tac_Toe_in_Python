@@ -60,3 +60,14 @@ def set_players(player_choice):
     else:
         player_1 = 'O'
         player_2 = 'X'
+
+
+# PRINTS THE BOARD
+
+def print_board(pos):
+
+    print("   |   |   ")
+    print("-----------")
+    print("   |   |   ")
+    print("-----------")
+    print("   |   |   ")
