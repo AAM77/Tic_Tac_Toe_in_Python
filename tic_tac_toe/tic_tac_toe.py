@@ -1,6 +1,14 @@
 
 board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 players = ["",""]
+count = 1
+
+def current_player():
+    if count % 2 == 0:
+        return players[1]
+    else:
+        return players[0]
+
 
 # GREETS THE PLAYER
 def greet_player():
@@ -74,7 +82,7 @@ def print_board():
 
 # GETS USER INPUT AND DETERMINES IF VALID
 def pick_position():
-    desired_position = int(input("Choose a position to place your mark. (1-9)"))
+    desired_position = int(input("Choose an open position. (1-9)"))
 
     if ((1 <= desired_position) and (desired_position <= 9)):
         board_index = desired_position - 1
@@ -85,5 +93,48 @@ def pick_position():
 
 # UPDATES THE BOARD ARRAY WITH THE NEW POSITION
 def update_board(pos_choice):
-    board[pos_choice] = 'X' # or 'O' ... the mark belonging to the current player
-    print_board()
+    if is_valid(pos_choice):
+        board[pos_choice] = current_player() # or 'O' ... the mark belonging to the current player
+        print_board()
+    else:
+        print("Invalid choice. That position is taken.")
+        pick_position()
+
+# CHECKS IF THE CHOSEN POSITION IS VALID
+def is_valid(pos_choice):
+    if board(pos_choice) == 'X' or board(pos_choice) == 'O':
+        return True
+    else:
+        return False
+
+def take_turn(board_index):
+    # check for winning combinations
+        # if winning combo:
+            # declare winner
+        # else:
+            #if all positions filled with 'X' or 'O'
+                # declare a tie
+                # end_game()
+            # else:
+                # pick_position()
+                # update_count()
+
+def update_turn():
+    count += 1
+
+def winning_combos():
+    return []
+
+def end_game():
+    # do something at the end
+    pass
+
+def check_for_combos():
+    # check if the board contains any of the winning combos
+    pass
+
+def check_board():
+    if all(item == 'X' or item == 'O' for item in board):
+        end_game()
+    else:
+        next_turn()
