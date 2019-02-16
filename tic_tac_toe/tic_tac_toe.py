@@ -107,10 +107,57 @@ def is_valid(pos_choice):
     else:
         return False
 
-def take_turn(board_index):
-    # check for winning combinations
+
+
+def update_turn():
+    count += 1
+
+def winning_combos():
+    return [
+    [0,1,2],            # Top-row
+    [0,3,6],            # Left column
+    [0,4,8],            # T-left-B-right
+    [1,4,7],            # Middle column
+    [2,5,8],            # Right column
+    [2,4,6],            # T-right-B-left
+    [3,4,5],            # Middle row
+    [6,7,8],            # Bottom row
+    ]
+
+# INITIATES END GAME SEQUENCE: ASKS THE USER TO REPLAY OR QUIT
+def end_game():
+    replay = (input("Do you want to play again? (y/n)")).lower()
+    if replay == 'y':
+        play_game()
+    elif: replay == 'n':
+        return 'Thank you for playing!'
+
+# CHECKS IF THERE IS A WINNER AND WHO THAT WINNER IS
+def check_for_winner():
+    for combo in winning_combos():
+        if all(board[pos] == current_player() for pos in combo):
+            print(f"{current_player()} wins!")
+            end_game()
+
+
+
+# CHECKS THE BOARD TO SEE IF IT IS FILLED OR NOT
+def check_board():
+    check_for_winner()
+    if all(item == 'X' or item == 'O' for item in board):
+        print("It's a tie!")
+        end_game()
+    else:
+        next_turn()
+
+
+def next_turn():
+    count += 1
+    choose_position()
+
         # if winning combo:
             # declare winner
+            # end_game()
         # else:
             #if all positions filled with 'X' or 'O'
                 # declare a tie
@@ -118,23 +165,3 @@ def take_turn(board_index):
             # else:
                 # pick_position()
                 # update_count()
-
-def update_turn():
-    count += 1
-
-def winning_combos():
-    return []
-
-def end_game():
-    # do something at the end
-    pass
-
-def check_for_combos():
-    # check if the board contains any of the winning combos
-    pass
-
-def check_board():
-    if all(item == 'X' or item == 'O' for item in board):
-        end_game()
-    else:
-        next_turn()
