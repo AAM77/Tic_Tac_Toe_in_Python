@@ -1,7 +1,32 @@
 
+
+
 board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 players = ["",""]
 count = 1
+
+def winning_combos():
+    return [
+    [0,1,2],            # Top-row
+    [0,3,6],            # Left column
+    [0,4,8],            # T-left-B-right
+    [1,4,7],            # Middle column
+    [2,5,8],            # Right column
+    [2,4,6],            # T-right-B-left
+    [3,4,5],            # Middle row
+    [6,7,8],            # Bottom row
+    ]
+
+
+def play_game():
+    global board
+    board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    print_game_logo()
+    greet_player()
+    choose_x_or_o()
+    print_board()
+    initiate_turn()
+
 
 def current_player():
     if count % 2 == 0:
@@ -40,7 +65,7 @@ def print_game_logo():
     print(title)
 
 
-    # ASKS THE PLAYER TO CHOOSE X or O
+# ASKS THE PLAYER TO CHOOSE X or O
 def choose_x_or_o():
 
     player_choice = input("Do you want to be 'X' or 'O'?").upper()
@@ -66,8 +91,8 @@ def set_players(player_choice):
         players[0] = 'X'
         players[1] = 'O'
     else:
-        player[0] = 'O'
-        player[1] = 'X'
+        players[0] = 'O'
+        players[1] = 'X'
 
 
 # PRINTS THE BOARD
@@ -81,87 +106,84 @@ def print_board():
     print(f" {board[6]} | {board[7]} | {board[8]} ")
 
 # GETS USER INPUT AND DETERMINES IF VALID
-def pick_position():
-    desired_position = int(input("Choose an open position. (1-9)"))
+def position_choice():
+    desired_position = input("Choose an open position. (1-9)")
 
-    if ((1 <= desired_position) and (desired_position <= 9)):
-        board_index = desired_position - 1
-        update_board(board_index)
+    if desired_position.isdigit():
+        if ((1 <= desired_position) and (desired_position <= 9)):
+            return desired_position - 1
+        else:
+            print("Invalid choice. You must choose a position from 1 - 9")
+            position_choice()
     else:
         print("Invalid choice. You must choose a position from 1 - 9")
-        pick_position()
+        position_choice()
 
-# UPDATES THE BOARD ARRAY WITH THE NEW POSITION
-def update_board(pos_choice):
-    if is_valid(pos_choice):
-        board[pos_choice] = current_player() # or 'O' ... the mark belonging to the current player
-        print_board()
-    else:
-        print("Invalid choice. That position is taken.")
-        pick_position()
 
 # CHECKS IF THE CHOSEN POSITION IS VALID
 def is_valid(pos_choice):
-    if board(pos_choice) == 'X' or board(pos_choice) == 'O':
-        return True
-    else:
+    if board[pos_choice] == 'X' or board[pos_choice] == 'O':
         return False
+    else:
+        return True
+
+# UPDATES THE BOARD ARRAY WITH THE NEW POSITION
+def update_board(pos_choice):
+    board[pos_choice] = current_player() # or 'O' ... the mark belonging to the current player
 
 
+# CHECKS IF THERE IS A WINNER AND WHO THAT WINNER IS
+def winner():
+    for combo in winning_combos():
+        if all(board[pos] == current_player() for pos in combo):
+            return current_player()
 
-def update_turn():
+# CHECKS THE BOARD TO SEE IF THERE IS A WINNER OR TIE
+def win_or_tie():
+    if winner():
+        return f"CONGRATULATIONS [-> {winner()} <-]! YOU WIN!!"
+    elif all(item == 'X' or item == 'O' for item in board):
+        return "It's a tie!"
+
+# INITIATES A TURN SEQUENCE: TAKE TURN IF NO WIN or TIE
+def initiate_turn():
+    if win_or_tie():
+        print(win_or_tie)
+        replay_or_quit()
+    else:
+        take_turn()
+
+# TAKES TURN IF POSITION CHOICE IS VALID
+def take_turn():
+    position_choice()
+    if is_valid(position_choice):
+        update_board(position_choice)
+        next_turn()
+    else:
+        print("That position is taken.")
+        position_choice()
+
+# UPDATES COUNT AND
+def next_turn():
+    update_count()
+    print('')
+    print(f"{current_player()}'S TURN.")
+    initiate_turn()
+
+# UPDATES THE COUNT
+def update_count():
+    global count
     count += 1
 
-def winning_combos():
-    return [
-    [0,1,2],            # Top-row
-    [0,3,6],            # Left column
-    [0,4,8],            # T-left-B-right
-    [1,4,7],            # Middle column
-    [2,5,8],            # Right column
-    [2,4,6],            # T-right-B-left
-    [3,4,5],            # Middle row
-    [6,7,8],            # Bottom row
-    ]
 
 # INITIATES END GAME SEQUENCE: ASKS THE USER TO REPLAY OR QUIT
-def end_game():
+def replay_or_quit():
     replay = (input("Do you want to play again? (y/n)")).lower()
     if replay == 'y':
         play_game()
-    elif: replay == 'n':
-        return 'Thank you for playing!'
-
-# CHECKS IF THERE IS A WINNER AND WHO THAT WINNER IS
-def check_for_winner():
-    for combo in winning_combos():
-        if all(board[pos] == current_player() for pos in combo):
-            print(f"{current_player()} wins!")
-            end_game()
-
-
-
-# CHECKS THE BOARD TO SEE IF IT IS FILLED OR NOT
-def check_board():
-    check_for_winner()
-    if all(item == 'X' or item == 'O' for item in board):
-        print("It's a tie!")
-        end_game()
+    elif replay == 'n':
+        print('Thank you for playing!')
+        exit()
     else:
-        next_turn()
-
-
-def next_turn():
-    count += 1
-    choose_position()
-
-        # if winning combo:
-            # declare winner
-            # end_game()
-        # else:
-            #if all positions filled with 'X' or 'O'
-                # declare a tie
-                # end_game()
-            # else:
-                # pick_position()
-                # update_count()
+        print('Invalid choice!')
+        replay_or_quit()
