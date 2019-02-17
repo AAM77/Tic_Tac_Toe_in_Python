@@ -110,8 +110,8 @@ def position_choice():
     desired_position = input("Choose an open position. (1-9)")
 
     if desired_position.isdigit():
-        if ((1 <= desired_position) and (desired_position <= 9)):
-            return desired_position - 1
+        if ((1 <= int(desired_position)) and (int(desired_position) <= 9)):
+            return int(desired_position) - 1
         else:
             print("Invalid choice. You must choose a position from 1 - 9")
             position_choice()
@@ -122,6 +122,7 @@ def position_choice():
 
 # CHECKS IF THE CHOSEN POSITION IS VALID
 def is_valid(pos_choice):
+
     if board[pos_choice] == 'X' or board[pos_choice] == 'O':
         return False
     else:
@@ -147,17 +148,21 @@ def win_or_tie():
 
 # INITIATES A TURN SEQUENCE: TAKE TURN IF NO WIN or TIE
 def initiate_turn():
+    game_result = win_or_tie()
+
     if win_or_tie():
-        print(win_or_tie)
+        print(game_result)
         replay_or_quit()
     else:
         take_turn()
 
 # TAKES TURN IF POSITION CHOICE IS VALID
 def take_turn():
-    position_choice()
-    if is_valid(position_choice):
-        update_board(position_choice)
+    board_pos = position_choice()
+
+    if is_valid(board_pos):
+        update_board(board_pos)
+        print_board()
         next_turn()
     else:
         print("That position is taken.")
