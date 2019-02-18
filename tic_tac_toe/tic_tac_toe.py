@@ -128,6 +128,7 @@ def is_valid(pos_choice):
     else:
         return True
 
+
 # UPDATES THE BOARD ARRAY WITH THE NEW POSITION
 def update_board(pos_choice):
     board[pos_choice] = current_player() # or 'O' ... the mark belonging to the current player
@@ -148,12 +149,13 @@ def win_or_tie():
 
 # INITIATES A TURN SEQUENCE: TAKE TURN IF NO WIN or TIE
 def initiate_turn():
-    game_result = win_or_tie()
 
     if win_or_tie():
-        print(game_result)
+        print(win_or_tie())
         replay_or_quit()
     else:
+        print('')
+        print(f"{current_player()}'S TURN.")
         take_turn()
 
 # TAKES TURN IF POSITION CHOICE IS VALID
@@ -167,12 +169,11 @@ def take_turn():
     else:
         print("That position is taken.")
         position_choice()
+        take_turn()
 
-# UPDATES COUNT AND
+# UPDATES COUNT AND INITATES THE TURN
 def next_turn():
     update_count()
-    print('')
-    print(f"{current_player()}'S TURN.")
     initiate_turn()
 
 # UPDATES THE COUNT
