@@ -1,10 +1,13 @@
+#######################################
+# TIC-TAC-TOE USING PROCEDURAL PYTHON #
+#######################################
 
-
-
+# GLOBAL VALUES
 board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 players = ["",""]
 count = 0
 
+# ALL OF THE WINNING COMBINATIONS
 def winning_combos():
     return [
     [0,1,2],            # Top-row
@@ -17,15 +20,6 @@ def winning_combos():
     [6,7,8],            # Bottom row
     ]
 
-def reset_values():
-    global board
-    global players
-    global count
-
-    board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-    players = ["",""]
-    count = 0
-
 # STARTS THE GAME
 def play_game():
     print_game_logo()
@@ -36,6 +30,7 @@ def play_game():
     print('')
     print_board()
     initiate_turn()
+
 
 # DETERMINES WHO THE CURRENT PLAYER IS ('X' or 'O')
 def current_player():
@@ -87,17 +82,21 @@ def choose_x_or_o():
         print("Player two is 'O'.")
         print('')
         print("Starting the game.")
-        set_players(player_choice)
+
 
     elif player_choice == 'O':
+        print('')
         print("You are now 'O', Player One.")
+        print('')
         print("Player two is 'X'.")
+        print('')
         print("Starting the game.")
-        set_players(player_choice)
 
     else:
         print("Incorrect choice. Choose 'X' or 'O'")
         choose_x_or_o()
+
+    set_players(player_choice)
 
 
 # SETS THE PLAYERS_1 and PLAYER_2 to
@@ -178,6 +177,18 @@ def initiate_turn():
     if not win_or_tie():
         next_turn()
 
+# UPDATES THE COUNT
+def update_count():
+    global count
+    count += 1
+
+# UPDATES COUNT AND
+def next_turn():
+    update_count()
+    print('')
+    print(f"{current_player()}'S TURN.")
+    take_turn()
+
 # TAKES TURN IF POSITION CHOICE IS VALID
 def take_turn():
     board_pos = position_choice()
@@ -189,18 +200,6 @@ def take_turn():
     else:
         print("That position is taken.")
         take_turn()
-
-# UPDATES COUNT AND
-def next_turn():
-    update_count()
-    print('')
-    print(f"{current_player()}'S TURN.")
-    take_turn()
-
-# UPDATES THE COUNT
-def update_count():
-    global count
-    count += 1
 
 # INITIATES END GAME SEQUENCE: ASKS THE USER TO REPLAY OR QUIT
 def replay_or_quit():
@@ -214,3 +213,12 @@ def replay_or_quit():
     else:
         print('Invalid choice!')
         replay_or_quit()
+
+def reset_values():
+    global board
+    global players
+    global count
+
+    board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    players = ["",""]
+    count = 0
