@@ -3,7 +3,7 @@
 
 board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 players = ["",""]
-count = 1
+count = 0
 
 def winning_combos():
     return [
@@ -17,17 +17,27 @@ def winning_combos():
     [6,7,8],            # Bottom row
     ]
 
-
-def play_game():
+def reset_values():
     global board
+    global players
+    global count
+
     board = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    players = ["",""]
+    count = 0
+
+# STARTS THE GAME
+def play_game():
     print_game_logo()
+    print('')
     greet_player()
+    print('')
     choose_x_or_o()
+    print('')
     print_board()
     initiate_turn()
 
-
+# DETERMINES WHO THE CURRENT PLAYER IS ('X' or 'O')
 def current_player():
     if count % 2 == 0:
         return players[1]
@@ -71,22 +81,28 @@ def choose_x_or_o():
     player_choice = input("Do you want to be 'X' or 'O'?").upper()
 
     if player_choice == 'X':
+        print('')
         print("You are now 'X', Player One.")
+        print('')
         print("Player two is 'O'.")
+        print('')
         print("Starting the game.")
+        set_players(player_choice)
+
     elif player_choice == 'O':
         print("You are now 'O', Player One.")
         print("Player two is 'X'.")
         print("Starting the game.")
+        set_players(player_choice)
+
     else:
         print("Incorrect choice. Choose 'X' or 'O'")
         choose_x_or_o()
 
-    set_players(player_choice)
-
 
 # SETS THE PLAYERS_1 and PLAYER_2 to
 def set_players(player_choice):
+
     if player_choice.upper() == 'X':
         players[0] = 'X'
         players[1] = 'O'
@@ -99,11 +115,13 @@ def set_players(player_choice):
 
 def print_board():
 
+    print('')
     print(f" {board[0]} | {board[1]} | {board[2]} ")
     print("-----------")
     print(f" {board[3]} | {board[4]} | {board[5]} ")
     print("-----------")
     print(f" {board[6]} | {board[7]} | {board[8]} ")
+    print('')
 
 # GETS USER INPUT AND DETERMINES IF VALID
 def position_choice():
@@ -128,10 +146,9 @@ def is_valid(pos_choice):
     else:
         return True
 
-
 # UPDATES THE BOARD ARRAY WITH THE NEW POSITION
 def update_board(pos_choice):
-    board[pos_choice] = current_player() # or 'O' ... the mark belonging to the current player
+    board[pos_choice] = current_player()
 
 
 # CHECKS IF THERE IS A WINNER AND WHO THAT WINNER IS
@@ -143,20 +160,23 @@ def winner():
 # CHECKS THE BOARD TO SEE IF THERE IS A WINNER OR TIE
 def win_or_tie():
     if winner():
-        return f"CONGRATULATIONS [-> {winner()} <-]! YOU WIN!!"
+        print('')
+        print( "########################################")
+        print(f"# CONGRATULATIONS [-> {winner()} <-]! YOU WIN!! #")
+        print( "########################################")
     elif all(item == 'X' or item == 'O' for item in board):
-        return "It's a tie!"
+        print('')
+        print("It's a tie!")
+    else:
+        return False
+
+    replay_or_quit()
+    return True
 
 # INITIATES A TURN SEQUENCE: TAKE TURN IF NO WIN or TIE
 def initiate_turn():
-
-    if win_or_tie():
-        print(win_or_tie())
-        replay_or_quit()
-    else:
-        print('')
-        print(f"{current_player()}'S TURN.")
-        take_turn()
+    if not win_or_tie():
+        next_turn()
 
 # TAKES TURN IF POSITION CHOICE IS VALID
 def take_turn():
@@ -165,27 +185,28 @@ def take_turn():
     if is_valid(board_pos):
         update_board(board_pos)
         print_board()
-        next_turn()
+        initiate_turn()
     else:
         print("That position is taken.")
-        position_choice()
         take_turn()
 
-# UPDATES COUNT AND INITATES THE TURN
+# UPDATES COUNT AND
 def next_turn():
     update_count()
-    initiate_turn()
+    print('')
+    print(f"{current_player()}'S TURN.")
+    take_turn()
 
 # UPDATES THE COUNT
 def update_count():
     global count
     count += 1
 
-
 # INITIATES END GAME SEQUENCE: ASKS THE USER TO REPLAY OR QUIT
 def replay_or_quit():
     replay = (input("Do you want to play again? (y/n)")).lower()
     if replay == 'y':
+        reset_values()
         play_game()
     elif replay == 'n':
         print('Thank you for playing!')
